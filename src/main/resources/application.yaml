@@ -3,8 +3,39 @@ spring:
     name: student-service
 
   config:
-    import: "configserver:"
+    import: "optional:configserver:"
+    fail-fast: false
 
   cloud:
     config:
-      uri: http://config.platform:9000
+      uri: http://localhost:9000
+      enabled: true
+
+  datasource:
+    url: jdbc:postgresql://35.234.212.63:5432/student_db
+    username: postgres
+    password: 'eqA3emFRbCjJY`r0'
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 0
+  forward-headers-strategy: framework
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9001/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+
