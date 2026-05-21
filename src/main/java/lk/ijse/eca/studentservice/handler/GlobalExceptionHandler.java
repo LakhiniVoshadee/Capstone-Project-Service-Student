@@ -96,11 +96,11 @@ public class GlobalExceptionHandler {
             MaxUploadSizeExceededException ex, HttpServletRequest request) {
         log.warn("Upload size exceeded: {}", ex.getMessage());
         ProblemDetail problem = buildProblemDetail(
-                HttpStatus.PAYLOAD_TOO_LARGE,
+                HttpStatus.CONTENT_TOO_LARGE,
                 "File Too Large",
                 "The uploaded picture exceeds the maximum allowed size of 5 MB.",
                 request.getRequestURI());
-        return problemResponse(HttpStatus.PAYLOAD_TOO_LARGE, problem);
+        return problemResponse(HttpStatus.CONTENT_TOO_LARGE, problem);
     }
 
     /**
@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
         log.warn("Constraint violation for [{}]: {}", request.getRequestURI(), detail);
 
         ProblemDetail problem = buildProblemDetail(
-                HttpStatus.UNPROCESSABLE_ENTITY, "Validation Error", detail, request.getRequestURI());
+                HttpStatus.UNPROCESSABLE_CONTENT, "Validation Error", detail, request.getRequestURI());
 
         ex.getConstraintViolations().forEach(cv -> {
             String path = cv.getPropertyPath().toString();
@@ -130,7 +130,7 @@ public class GlobalExceptionHandler {
             problem.setProperty(field, cv.getMessage());
         });
 
-        return problemResponse(HttpStatus.UNPROCESSABLE_ENTITY, problem);
+        return problemResponse(HttpStatus.UNPROCESSABLE_CONTENT, problem);
     }
 
     @ExceptionHandler(Exception.class)
